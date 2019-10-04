@@ -20,9 +20,13 @@ var hitstun = 0
 
 var state = "default"
 
+var home_position = Vector2(0,0)
+
 onready var anim = $AnimationPlayer
 onready var sprite = $Sprite
 onready var hitbox = $Hitbox
+
+onready var camera = get_parent().get_node("Camera")
 
 var texture_default = null
 var texture_hurt = null
@@ -32,6 +36,10 @@ func _ready():
 	texture_hurt = load(sprite.texture.get_path().replace(".png","_hurt.png"))
 	add_to_group("entity")
 	health = MAX_HEALTH
+	home_position = position
+	
+	camera.connect("screen_change_started", self, "screen_change_started")
+	camera.connect("screen_change_completed", self, "screen_change_completed")
 
 func loop_movement():
 	var motion
@@ -99,6 +107,27 @@ func enemy_death():
 	var death_animation = preload("res://enemies/enemy_death.tscn").instance()
 	death_animation.global_position = global_position
 	get_parent().add_child(death_animation)
+	queue_free()
+
+func screen_change_started():
+	set_physics_process(false)
+	
+	if TYPE == "ENEMY":
+		if !camera.camera_rect.has_point(position):
+			reset()
+
+func screen_change_completed():
+	set_physics_process(true)
+	if TYPE == "ENEMY":
+		if !camera.camera_rect.has_point(position):
+			set_physics_process(false)
+
+func reset():
+	var new_instance = load(filename).instance()
+	get_parent().add_child(new_instance)
+	new_instance.position = home_position
+	new_instance.home_position = home_position
+	new_instance.set_physics_process(false)
 	queue_free()
 
 # put into helper script pls

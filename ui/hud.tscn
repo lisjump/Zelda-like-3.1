@@ -10,4 +10,3 @@ script = ExtResource( 1 )
 position = Vector2( 5, 5 )
 texture = ExtResource( 2 )
 hframes = 5
-
