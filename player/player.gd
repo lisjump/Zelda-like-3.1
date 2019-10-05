@@ -8,12 +8,19 @@ func _physics_process(delta):
 			state_swing()
 		"hold":
 			state_hold()
+		"jump":
+			state_jump()
+		"fall":
+			state_fall()
+		"jumphold":
+			state_jumphold()
 
 func state_default():
 	loop_controls()
 	loop_movement()
 	loop_damage()
 	loop_spritedir()
+	loop_height()
 	
 	if movedir == Vector2.ZERO:
 		anim_switch("idle")
@@ -38,17 +45,67 @@ func state_swing():
 	anim_switch("swing")
 	loop_movement()
 	loop_damage()
-	movedir = Vector2.ZERO
+	loop_height()
+	if height == 0:
+		movedir = Vector2.ZERO
+	else:
+		if height < JUMP_HEIGHT:
+			height += JUMP_SPEED
+		else:
+			height -= JUMP_SPEED
 
 func state_hold():
 	loop_controls()
 	loop_movement()
 	loop_damage()
+	loop_height()
 	if movedir != Vector2(0,0):
 		anim_switch("walk")
 	else:
 		anim_switch("idle")
+	
 	if !Input.is_action_pressed("A") && !Input.is_action_pressed("B"):
+		state = "default"
+
+func state_jumphold():
+	loop_controls()
+	loop_movement()
+	loop_damage()
+	loop_height()
+	anim_switch("idle")
+	
+	if height < JUMP_HEIGHT:
+		height += JUMP_SPEED
+	else:
+		height -= JUMP_SPEED
+	
+	if !Input.is_action_pressed("A") && !Input.is_action_pressed("B"):
+		state = "default"
+
+func state_jump():
+	loop_controls()
+	loop_movement()
+	loop_height()
+	anim_switch("jump")
+	height += JUMP_SPEED
+	
+	if Input.is_action_just_pressed("B"):
+		use_item(preload("res://items/sword.tscn"), "B")
+	
+	if height >= JUMP_HEIGHT:
+		state = "fall"
+
+func state_fall():
+	loop_controls()
+	loop_movement()
+	loop_height()
+	anim_switch("jump")
+	
+	if Input.is_action_just_pressed("B"):
+		use_item(preload("res://items/sword.tscn"), "B")
+	
+	if height <= 0:
+		height = 0
 		state = "default"
 
 func loop_controls():

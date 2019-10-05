@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://player/player.gd" type="Script" id=1]
 [ext_resource path="res://player/player.png" type="Texture" id=2]
+[ext_resource path="res://engine/shadow.tscn" type="PackedScene" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "idleDown"
@@ -46,6 +47,60 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ 3 ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "jumpDown"
+length = 0.9
+loop = true
+step = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 30, 31, 32 ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "jumpSide"
+length = 0.9
+loop = true
+step = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 33, 34, 35 ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "jumpUp"
+length = 0.9
+loop = true
+step = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 30, 31, 32 ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -204,12 +259,16 @@ TYPE = "PLAYER"
 MAX_HEALTH = 3.0
 DAMAGE = 0.0
 HURT_SOUND = "res://player/player_hurt.wav"
+JUMP_SPEED = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 4.0
 anims/idleDown = SubResource( 1 )
 anims/idleSide = SubResource( 2 )
 anims/idleUp = SubResource( 3 )
+anims/jumpDown = SubResource( 15 )
+anims/jumpSide = SubResource( 16 )
+anims/jumpUp = SubResource( 17 )
 anims/pushDown = SubResource( 4 )
 anims/pushSide = SubResource( 5 )
 anims/pushUp = SubResource( 6 )
@@ -224,11 +283,15 @@ anims/walkUp = SubResource( 12 )
 texture = ExtResource( 2 )
 vframes = 6
 hframes = 6
-frame = 12
+frame = 35
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource( 13 )
+
+[node name="Shadow" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 5 )
+z_index = -1
 
 [node name="Hitbox" type="Area2D" parent="."]
 visible = false
