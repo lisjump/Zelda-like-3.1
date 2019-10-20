@@ -8,14 +8,11 @@ export(float, 0.5, 20, 0.5) var MAX_HEALTH = 1
 export(int) var SPEED = 70
 export(float, 0, 20, 0.5) var DAMAGE = 0.5
 export(String, FILE) var HURT_SOUND = "res://enemies/enemy_hurt.wav"
-export(int) var JUMP_SPEED = 2
-export(int) var JUMP_HEIGHT = 20
 
 # MOVEMENT
 var movedir = Vector2(0,0)
 var knockdir = Vector2(0,0)
 var spritedir = "Down"
-var height = 0
 
 # COMBAT
 var health = MAX_HEALTH
@@ -51,17 +48,6 @@ func loop_movement():
 	else:
 		motion = knockdir.normalized() * 125
 	move_and_slide(motion)
-
-func loop_height():
-	if !["jump", "jumphold", "swing"].has(state) && height > 0:
-		height -= JUMP_SPEED
-	if height < 0:
-		height = 0
-	
-	sprite.position.y = -height
-	sprite.z_index = height
-	if has_node("Shadow"):
-		$Shadow.visible = (!height==0)
 
 func loop_spritedir():
 	match movedir:
@@ -132,6 +118,7 @@ func screen_change_started():
 
 func screen_change_completed():
 	set_physics_process(true)
+	
 	if TYPE == "ENEMY":
 		if !camera.camera_rect.has_point(position):
 			set_physics_process(false)

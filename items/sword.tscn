@@ -5,6 +5,7 @@
 
 [sub_resource type="Animation" id=1]
 resource_name = "swingDown"
+step = 0.0333333
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -270,13 +271,14 @@ anims/swingRight = SubResource( 3 )
 anims/swingUp = SubResource( 4 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( -4, -16 )
+position = Vector2( -13, 3 )
+rotation = 4.71239
 texture = ExtResource( 2 )
 hframes = 2
 
 [node name="Hitbox" type="Area2D" parent="."]
-position = Vector2( -4, -15 )
-scale = Vector2( 0.25, 1 )
+position = Vector2( -12, 3 )
+scale = Vector2( 1, 0.25 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource( 5 )

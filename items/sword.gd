@@ -2,8 +2,6 @@ extends Item
 
 onready var anim = $AnimationPlayer
 
-var offset = Vector2(0,0)
-
 func _ready():
 	set_physics_process(false)
 
@@ -14,25 +12,21 @@ func start():
 	if get_parent().has_method("state_swing"):
 		get_parent().state = "swing"
 
-func _process(delta):
-	position.x = offset.x
-	position.y = -get_parent().height + offset.y
-
 func destroy(animation):
 	if input != null && Input.is_action_pressed(input):
 		set_physics_process(true)
 		match get_parent().spritedir:
 			"Left":
-				offset.x = 3
+				position.x += 3
 			"Right":
-				offset.x = -3
+				position.x -= 3
 			"Up":
-				offset.y = 4
+				position.y += 4
 				z_index -= 1
 			"Down":
-				offset.y = -3
+				position.y -= 3
 		return
-	
+
 	delete()
 
 func delete():
@@ -44,4 +38,4 @@ func _physics_process(delta):
 	if get_parent().has_method("state_hold"):
 		get_parent().state = "hold"
 	if !Input.is_action_pressed(input):
-		destroy(null)
+		destroy(null) 
