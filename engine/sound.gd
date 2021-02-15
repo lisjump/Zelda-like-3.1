@@ -1,5 +1,6 @@
 extends Node
 
+# This is autoloaded 
 func play(sound, volume=0):
 	var sfx = AudioStreamPlayer.new()
 	get_tree().get_root().add_child(sfx)

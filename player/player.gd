@@ -1,5 +1,8 @@
 extends Entity
 
+# We use raycast to see what the player is colliding with
+# That way we can stop pushing things that aren't meant to pe pushed
+# like signs or if our shoulder is just barely hitting a wall
 onready var ray = $RayCast2D
 
 var action_cooldown = 0
@@ -42,17 +45,21 @@ func state_default():
 	if Input.is_action_just_pressed("B") && action_cooldown == 0:
 		use_item(preload("res://items/sword.tscn"), "B")
 
+# swing the sword
 func state_swing():
 	anim_switch("swing")
+	
+	# we run the movement loop so we can take knockback
 	loop_movement()
 	loop_damage()
 	movedir = Vector2.ZERO
 
+# Hold the sword in front of the player this gets set in the sword scene
 func state_hold():
 	loop_controls()
 	loop_movement()
 	loop_damage()
-	if movedir != Vector2(0,0):
+	if movedir != Vector2.ZERO:
 		anim_switch("walk")
 	else:
 		anim_switch("idle")
@@ -60,6 +67,11 @@ func state_hold():
 	if !Input.is_action_pressed("A") && !Input.is_action_pressed("B"):
 		state = "default"
 
+# for use with the cliff scene
+# this basically makes it so that you keep going down until you
+# are no longer colliding with a collision tile
+# right now it only works in the down direction
+# to fix this edit loop_interact as well
 func state_fall():
 	anim_switch("jump")
 	position.y += 100 * get_physics_process_delta_time()

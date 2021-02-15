@@ -2,31 +2,46 @@ extends CanvasLayer
 
 onready var player = get_parent().get_node("Player")
 
+
+# Number of hearts in a row
 const HEART_ROW_SIZE = 8
-const HEART_SIZE = 8
+
+# space between hearts (including heart width)
+const HEART_OFFSET = 8
 
 onready var hearts = $Hearts
 
 func _ready():
 	for i in player.MAX_HEALTH:
-		var newheart = Sprite.new()
-		newheart.texture = hearts.texture
-		newheart.hframes = hearts.hframes
-		hearts.add_child(newheart)
+		new_heart()		
 
+# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	for heart in hearts.get_children():
+	# find the heart that might not be full.
+	var last_heart = floor(player.health)
+	
+	for heart in $Hearts.get_children():
 		var index = heart.get_index()
 		
-		var x = (index % HEART_ROW_SIZE) * HEART_SIZE
-		var y = (index / HEART_ROW_SIZE) * HEART_SIZE
-		
-		heart.position = Vector2(x,y)
-		
-		var lastheart = floor(player.health)
-		if index > lastheart:
+		# if this heart comes after the last heart, then it is empty
+		# if this hear is the last heart, find the fraction
+		# if this heart comes before the last heart, it is full
+		if index > last_heart:
 			heart.frame = 0
-		if index == lastheart:
-			heart.frame = (player.health - lastheart) * 4
-		if index < lastheart:
+		elif index == last_heart:
+			heart.frame = (player.health - last_heart) * 4
+		elif index < last_heart:
 			heart.frame = 4
+			
+	# update the sprite frame to be the player keys
+#	$keys.frame = player.keys
+
+func new_heart():
+	var newheart = Sprite.new()
+	newheart.texture = $Hearts.texture
+	newheart.hframes = $Hearts.hframes
+	$Hearts.add_child(newheart)
+	var index = newheart.get_index()
+	var x = (index % HEART_ROW_SIZE) * HEART_OFFSET
+	var y = floor(index / HEART_ROW_SIZE) * HEART_OFFSET
+	newheart.position = Vector2(x, y)		
