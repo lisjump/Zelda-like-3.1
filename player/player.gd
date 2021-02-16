@@ -6,6 +6,8 @@ extends Entity
 onready var ray = $RayCast2D
 
 var action_cooldown = 0
+var MAX_KEYS = 9
+var keys = 0
 
 func _ready():
 	add_to_group("player")
@@ -37,7 +39,8 @@ func state_default():
 	
 	if movedir == Vector2.ZERO:
 		anim_switch("idle")
-	elif is_on_wall() && ray.is_colliding() && !ray.get_collider().is_in_group("nopush"):
+	# if player is facing a wall, but not something that shouldn't have a push animation
+	elif is_on_wall() && ray.is_colliding() && !(ray.get_collider().is_in_group("nopush") || ray.get_collider().get_parent().is_in_group("nopush")):
 		anim_switch("push")
 	else:
 		anim_switch("walk")
@@ -101,6 +104,8 @@ func loop_interact():
 	if ray.is_colliding():
 		var collider = ray.get_collider()
 		if collider.is_in_group("interact") && Input.is_action_just_pressed("A") && action_cooldown == 0:
+			collider.interact(self)
+		elif collider.is_in_group("door"):
 			collider.interact(self)
 		elif collider.is_in_group("cliff") && spritedir == "Down":
 			position.y += 2

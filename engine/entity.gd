@@ -78,6 +78,9 @@ func loop_damage():
 	else:
 		sprite.texture = texture_default
 		if TYPE == "ENEMY" && health <= 0:
+			var drop = randi() % 4
+			if drop == 0:
+				instance_scene(preload("res://pickups/heart.tscn"))
 			enemy_death()
 	
 	for area in hitbox.get_overlapping_areas():
@@ -85,7 +88,7 @@ func loop_damage():
 		
 		# if the entity isn't in hitstun, and the overlapping body gives damage
 		# and the overlapping body is of a different type
-		if hitstun == 0 && body.get("DAMAGE") > 0 && body.get("TYPE") != TYPE:
+		if hitstun == 0 && body.get("DAMAGE") && body.get("DAMAGE") > 0 && body.get("TYPE") != TYPE:
 			health -= body.DAMAGE
 			hitstun = 10
 			knockdir = global_position - body.global_position
