@@ -31,6 +31,10 @@ collision_mask = 2
 script = ExtResource( 1 )
 MAX_HEALTH = 0.5
 SPEED = 40
+ITEM_DROP_WEIGHTS = {
+"pickups/heart": 1,
+"pickups/key": 3
+}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 4.0

@@ -11,6 +11,16 @@ export(int) 						var SPEED 		= 70
 export(float, 0, 20, 0.5) 		var DAMAGE 		= 0.5
 export(String, FILE) 			var HURT_SOUND 	= "res://enemies/enemy_hurt.wav"
 
+export(int, 0, 100, 5) 			var ITEM_DROP_PERCENT 		= 25
+
+# Keys are scene path names and values should be integers
+export(Dictionary) 				var ITEM_DROP_WEIGHTS = {
+	'pickups/heart'	: 1,
+	'pickups/key'	: 0,
+}
+
+var ITEM_DROP_RANGES = {}
+
 # MOVEMENT
 var movedir = Vector2.ZERO
 var knockdir = Vector2.ZERO
@@ -41,6 +51,8 @@ func _ready():
 	add_to_group("entity")
 	health = MAX_HEALTH
 	home_position = position
+	
+	normalize_item_drop_weights()
 	
 	# the camera sends these signals
 	camera.connect("screen_change_started", self, "screen_change_started")
@@ -78,9 +90,6 @@ func loop_damage():
 	else:
 		sprite.texture = texture_default
 		if TYPE == "ENEMY" && health <= 0:
-			var drop = randi() % 4
-			if drop == 0:
-				instance_scene(preload("res://pickups/heart.tscn"))
 			enemy_death()
 	
 	for area in hitbox.get_overlapping_areas():
@@ -124,7 +133,28 @@ func instance_scene(scene):
 
 func enemy_death():
 	instance_scene(preload("res://enemies/enemy_death.tscn"))
+	enemy_drop()
 	queue_free()
+
+# When the enemy dies it may drop an item
+func enemy_drop():
+	# drop is a number between 0 and 99
+	var drop = randi() % 100
+	
+	# if drop is strictly less than our percentage, then drop something
+	if drop < ITEM_DROP_PERCENT:
+		# Here we are basically filling a hat with names.
+		# For each key, we'll put [value] entries of the key into the list
+		var drop_list = []
+		for key in ITEM_DROP_WEIGHTS:
+			for i in range(ITEM_DROP_WEIGHTS[key]):
+				drop_list.append(key)
+		
+		# index is a number between 0 and list size - 1
+		var index = randi() % drop_list.size()
+		# load the scene at index
+		var scene = str("res://", drop_list[index], ".tscn")
+		instance_scene(load(scene))
 
 func screen_change_started():
 	set_physics_process(false)
@@ -153,6 +183,29 @@ func reset():
 	new_instance.set_physics_process(false)
 	queue_free()
 
+# With the way we handle item drops, we don't want to have the total 
+# number get too big.  This keeps it below or around 100.
+func normalize_item_drop_weights():
+	var sum = 0
+	# force multiplier to be a float
+	var multiplier = 1.0
+	for key in ITEM_DROP_WEIGHTS:
+		sum += round(ITEM_DROP_WEIGHTS[key])
+	# if our sum is greater than 100 then we want then find the 
+	# multiplier that will bring it close to 100
+	if sum > 100:
+		multiplier = 100/sum
+	
+	for key in ITEM_DROP_WEIGHTS:
+		# First do the multiplier
+		ITEM_DROP_WEIGHTS[key] = multiplier * float(ITEM_DROP_WEIGHTS[key])
+		# if rounding it will make it zero (i.e. it was .4) then make it 1
+		if ITEM_DROP_WEIGHTS[key] > 0 && round(ITEM_DROP_WEIGHTS[key]) == 0:
+			ITEM_DROP_WEIGHTS[key] = 1
+		else:
+			ITEM_DROP_WEIGHTS[key] = round(ITEM_DROP_WEIGHTS[key])
+
+
 # put into helper script pls
 static func rand_direction():
 	var new_direction = randi() % 4
@@ -165,3 +218,4 @@ static func rand_direction():
 			return Vector2.UP
 		3:
 			return Vector2.DOWN
+
