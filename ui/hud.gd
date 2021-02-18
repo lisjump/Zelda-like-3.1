@@ -46,3 +46,5 @@ func new_heart():
 	var x = (index % HEART_ROW_SIZE) * HEART_OFFSET
 	var y = floor(index / HEART_ROW_SIZE) * HEART_OFFSET
 	newheart.position = Vector2(x, y)		
+	
+

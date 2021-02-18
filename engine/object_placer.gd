@@ -1,6 +1,12 @@
 extends TileMap
 
+class tile_info:
+	var id : String
+	var deleted : bool
+
 func _ready():
+	add_to_group("persist")
+
 	for tile in get_used_cells():
 		var tile_name = get_tileset().tile_get_name(get_cellv(tile))
 		
