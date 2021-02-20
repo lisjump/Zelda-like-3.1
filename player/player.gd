@@ -5,16 +5,18 @@ extends Entity
 # like signs or if our shoulder is just barely hitting a wall
 onready var ray = $RayCast2D
 
-var action_cooldown = 0
-var MAX_KEYS = 9
-var keys = 0
+const SAVE_FILE := "res://game-data.json"
+
+
+var action_cooldown := 0
+var MAX_KEYS := 9
+var keys := 0
 
 func _ready():
 	add_to_group("persist")
 	add_to_group("player")
 	ray.add_exception(hitbox)
 	camera.connect("screen_change_started", self, "screen_change_started")
-	load_game()
 
 func _physics_process(delta):
 	match state:
@@ -106,6 +108,12 @@ func loop_controls():
 	
 	movedir.x = -int(LEFT) + int(RIGHT)
 	movedir.y = -int(UP) + int(DOWN)
+	
+	if Input.is_action_just_pressed("LOAD"):
+		load_game()
+	if Input.is_action_just_pressed("SAVE"):
+		save_game()
+
 
 func loop_interact():
 	if ray.is_colliding():
@@ -119,8 +127,12 @@ func loop_interact():
 			sfx.play(preload("res://player/player_jump.wav"), 20)
 			state = "fall"
 
+#------------- SIGNALS ------------------------
+
 func screen_change_started():
 	save_game()
+	
+#------------- SAVING ------------------------
 
 func save():
 	var save_dict = {
@@ -128,6 +140,7 @@ func save():
 		"parent" : get_parent().get_path(),
 		"pos_x" : home_position.x, # Vector2 is not supported by JSON
 		"pos_y" : home_position.y,
+		"spritedir" : home_spritedir,
 		"health" : health,
 		"MAX_HEALTH" : MAX_HEALTH,
 		"DAMAGE" : DAMAGE,
@@ -138,13 +151,16 @@ func save():
 	return save_dict
 
 func load_dict(node_data):
-	position.x	= node_data["pos_x"]
-	position.y	= node_data["pos_y"]
-	health		= node_data["health"]
-	MAX_HEALTH	= node_data["MAX_HEALTH"]
-	DAMAGE		= node_data["DAMAGE"]
-	SPEED		= node_data["SPEED"]
-	keys			= node_data["keys"]
+	position.x		= node_data["pos_x"]
+	position.y		= node_data["pos_y"]
+	home_position 	= position
+	spritedir		= node_data["spritedir"]
+	home_spritedir	= node_data["spritedir"]
+	health			= node_data["health"]
+	MAX_HEALTH		= node_data["MAX_HEALTH"]
+	DAMAGE			= node_data["DAMAGE"]
+	SPEED			= node_data["SPEED"]
+	keys				= node_data["keys"]
 
 	
 # Note: This can be called from anywhere inside the tree. This function is
@@ -152,10 +168,9 @@ func load_dict(node_data):
 # Go through everything in the persist category and ask them to return a
 # dict of relevant variables.
 func save_game():
-	var file_name = "user://game-data.json"
 	print("Saving Game")
 	var save_game = File.new()
-	save_game.open(file_name, File.WRITE)
+	save_game.open(SAVE_FILE, File.WRITE)
 	var save_nodes = get_tree().get_nodes_in_group("persist")
 	for node in save_nodes:
 		print(str("getting data: ", node.name))
@@ -178,40 +193,54 @@ func save_game():
 	save_game.close()
 
 func load_game():
-	var file_name = "user://game-data.json"
 	var save_game = File.new()
-	if not save_game.file_exists(file_name):
+	if not save_game.file_exists(SAVE_FILE):
 		return # Error! We don't have a save to load.
 
 	# We need to revert the game state so we're not cloning objects
 	# during loading. This will vary wildly depending on the needs of a
 	# project, so take care with this step.
 	# For our example, we will accomplish this by deleting saveable objects.
-#	var save_nodes = get_tree().get_nodes_in_group("persist")
-#	for i in save_nodes:
-#		i.queue_free()
+	var save_nodes = get_tree().get_nodes_in_group("persist")
+
+	for node in save_nodes:
+		# if it is the player (our current) node we can't delete it
+		# we also don't want to delete it if it doesn't have a save
+		# function, because we probably haven't finished setting it up
+		if get_filename() == node.get_filename():
+			print("--persistent node '%s' is the Player node, skipped" % node.name)
+			continue
+		elif !node.has_method("save"):
+			print("--persistent node '%s' is missing a save() function, skipped" % node.name)
+			continue
+		node.queue_free()
 
 	# Load the file line by line and process that dictionary to restore
 	# the object it represents.
-	save_game.open(file_name, File.READ)
+	save_game.open(SAVE_FILE, File.READ)
 	while save_game.get_position() < save_game.get_len():
 		# Get the saved dictionary from the next line in the save file
 		var node_data = parse_json(save_game.get_line())
+		print(node_data)
 
-		# Firstly, we need to create the object and add it to the tree and set its position.
+		# If it is the player node we're not creating a new instance
 		if get_filename() == node_data["filename"]:
 			load_dict(node_data)
 			continue
-		print(str("fn: ", node_data["filename"]))
-		print(str("fn: ", get_filename()))
+
+		# Firstly, we need to create the object and add it to the tree and set its position.
 		var new_object = load(node_data["filename"]).instance()
 		get_node(node_data["parent"]).add_child(new_object)
 		new_object.position = Vector2(node_data["pos_x"], node_data["pos_y"])
-
-		# Now we set the remaining variables.
-		for i in node_data.keys():
-			if i == "filename" or i == "parent" or i == "pos_x" or i == "pos_y":
-				continue
-			new_object.set(i, node_data[i])
+		
+		# If it had its own load method, use it
+		# Otherwise set the remaining variables based on key names
+		if new_object.has_method("load_dict"):
+			new_object.load_dict(node_data)
+		else:
+			for i in node_data.keys():
+				if i == "filename" or i == "parent" or i == "pos_x" or i == "pos_y":
+					continue
+				new_object.set(i, node_data[i])
 
 	save_game.close()

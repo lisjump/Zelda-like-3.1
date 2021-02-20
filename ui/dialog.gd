@@ -1,12 +1,12 @@
 extends CanvasLayer
 
-var text = "Bees range in size from tiny stingless bee species whose workers are less than 2 millimetres (0.08 in) long, to Megachile pluto, the largest species of leafcutter bee, whose females can attain a length of 39 millimetres (1.54 in). The most common bees in the Northern Hemisphere are the Halictidae, or sweat bees, but they are small and often mistaken for wasps or flies. Vertebrate predators of bees include birds such as be... END. But I want another"
+var text := "Bees range in size from tiny stingless bee species whose workers are less than 2 millimetres (0.08 in) long, to Megachile pluto, the largest species of leafcutter bee, whose females can attain a length of 39 millimetres (1.54 in). The most common bees in the Northern Hemisphere are the Halictidae, or sweat bees, but they are small and often mistaken for wasps or flies. Vertebrate predators of bees include birds such as be... END. But I want another"
 
-const LINE_LENGTH = 38
-const TEXT_SPEED = 0.02
-const NUM_LINES = 2
+const LINE_LENGTH	:= 38
+const TEXT_SPEED		:= 0.02
+const NUM_LINES		:= 2
 
-var lines = []
+var lines := []
 
 signal line_end
 signal advance_text

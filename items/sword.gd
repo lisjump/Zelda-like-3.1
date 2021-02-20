@@ -1,6 +1,6 @@
 extends Item
 
-onready var anim = $AnimationPlayer
+onready var anim := $AnimationPlayer
 
 func _ready():
 	set_physics_process(false)

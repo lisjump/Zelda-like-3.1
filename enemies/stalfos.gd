@@ -1,7 +1,7 @@
 extends Entity
 
-var movetimer_length = 15
-var movetimer = 0
+var movetimer_length := 15
+var movetimer := 0
 
 func _ready():
 	MAX_HEALTH = 1

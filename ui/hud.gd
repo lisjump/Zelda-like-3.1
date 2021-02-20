@@ -4,13 +4,13 @@ onready var player = get_parent().get_node("Player")
 
 
 # Number of hearts in a row
-const HEART_ROW_SIZE = 8
+const HEART_ROW_SIZE := 8
 
 # space between hearts (including heart width)
-const HEART_OFFSET = 8
+const HEART_OFFSET := 8
 
-onready var hearts = $hearts
-onready var keys = $keys
+onready var hearts := $hearts
+onready var keys := $keys
 
 func _ready():
 	for i in player.MAX_HEALTH:

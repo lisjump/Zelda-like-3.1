@@ -1,12 +1,12 @@
 extends Camera2D
 
-const SCREEN_SIZE = Vector2(256, 144)
-const SCROLL_SPEED = 0.5
+const SCREEN_SIZE	:= Vector2(256, 144)
+const SCROLL_SPEED	:= 0.5
 
 export(NodePath) var target
-var target_grid_pos = Vector2(0,0)
-var last_target_grid_pos = Vector2(0,0)
-var camera_rect = Rect2()
+var target_grid_pos := Vector2(0,0)
+var last_target_grid_pos := Vector2(0,0)
+var camera_rect := Rect2()
 
 signal screen_change
 signal screen_change_started
