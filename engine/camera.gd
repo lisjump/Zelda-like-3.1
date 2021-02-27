@@ -1,7 +1,7 @@
 extends Camera2D
 
-const SCREEN_SIZE	:= Vector2(256, 144)
-const SCROLL_SPEED	:= 0.5
+export(Vector2) var SCREEN_SIZE = Vector2(256, 144)
+export(float, 0, 5, .1) var SCROLL_SPEED	= 0.5
 
 export(NodePath) var target
 var target_grid_pos := Vector2(0,0)
@@ -38,6 +38,7 @@ func _process(delta):
 	# if the player is no longer in the camera rectangle
 	if !$Tween.is_active() && !camera_rect.has_point(target.position):
 		scroll_camera()
+		
 	
 
 func scroll_camera():

@@ -1,3 +1,2 @@
-{"DAMAGE":0,"MAX_HEALTH":8,"SPEED":70,"filename":"res://player/player.tscn","health":8,"keys":1,"parent":"/root/TestArea","pos_x":430.071014,"pos_y":50.9062,"spritedir":"Down"}
-{"filename":"res://tiles/key_door.tscn","parent":"/root/TestArea","pos_x":376,"pos_y":144,"rotation":0}
-{"filename":"res://tiles/key_door.tscn","parent":"/root/TestArea","pos_x":392,"pos_y":144,"rotation":0}
+{"filename":"res://engine/Main.tscn","inital_area_path":"res://areas/town.tscn","player_start_spritedir":"Up","player_startx":56,"player_starty":32}
+{"DAMAGE":0,"MAX_HEALTH":10,"SPEED":70,"filename":"res://player/player.tscn","health":10,"keys":0,"parent":"/root/Main"}

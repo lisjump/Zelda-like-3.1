@@ -6,7 +6,7 @@ var movetimer := 0
 func _ready():
 	MAX_HEALTH = 1
 	health = 1
-	SPEED = 0
+	SPEED = 20
 	movedir = rand_direction()
 	if anim.current_animation != "default":
 		anim.play("default")

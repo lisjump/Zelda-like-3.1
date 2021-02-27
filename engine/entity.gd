@@ -33,7 +33,6 @@ var hitstun := 0
 var state := "default"
 
 var home_position := Vector2.ZERO
-var home_spritedir : String = spritedir
 
 # This makes it so not every entity class has to name these 
 # nodes the same thing.  These get loaded a moment after the entity
@@ -41,7 +40,7 @@ onready var anim := $AnimationPlayer
 onready var sprite := $Sprite
 onready var hitbox := $Hitbox
 
-onready var camera := get_parent().get_node("Camera")
+onready var camera := get_node("/root/Main/Camera")
 
 var texture_default = null
 var texture_hurt = null
