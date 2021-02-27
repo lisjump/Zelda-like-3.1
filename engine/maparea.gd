@@ -7,6 +7,8 @@ export(String, "Up", "Down", "Left", "Right")	var  player_start_spritedir = "DOW
 
 func _ready():
 	SAVE_FILE = "res://" + name + ".json"
+	# yield is need to allow the scene to finish loading
+	# before loading the savefile.
 	yield(get_tree(), "idle_frame")
 	load_maparea()
 

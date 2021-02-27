@@ -1,5 +1,4 @@
-{"filename":"res://pickups/key.tscn","parent":"/root/Main/dungeon","pos_x":164.5,"pos_y":71.5,"rotation":0}
-{"filename":"res://tiles/key_door.tscn","parent":"/root/Main/dungeon","pos_x":256,"pos_y":72,"rotation":1.570796}
-{"filename":"res://pickups/key.tscn","parent":"/root/Main/dungeon","pos_x":327.5,"pos_y":84.5,"rotation":1.570796}
-{"filename":"res://tiles/key_door.tscn","parent":"/root/Main/dungeon","pos_x":376,"pos_y":144,"rotation":0}
 {"filename":"res://tiles/key_door.tscn","parent":"/root/Main/dungeon","pos_x":392,"pos_y":144,"rotation":0}
+{"filename":"res://pickups/key.tscn","parent":"/root/Main/dungeon","pos_x":66.730965,"pos_y":99.125969,"rotation":0}
+{"filename":"res://pickups/key.tscn","parent":"/root/Main/dungeon","pos_x":58.194748,"pos_y":82.059685,"rotation":0}
+{"filename":"res://pickups/key.tscn","parent":"/root/Main/dungeon","pos_x":86.213249,"pos_y":45.936443,"rotation":0}

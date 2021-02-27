@@ -53,7 +53,7 @@ func teleport(new_scene_path, new_position, new_spritedir):
 #------------- SIGNALS ------------------------
 
 func screen_change_completed():
-	save_game(false)
+	save_game()
 	
 #------------- SAVING ------------------------
 

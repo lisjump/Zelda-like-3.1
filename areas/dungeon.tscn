@@ -191,3 +191,7 @@ position = Vector2( 183.771, 23.3959 )
 position = Vector2( 304, 56 )
 dest_scene = "res://areas/town.tscn"
 dest_position = Vector2( 56, 112 )
+
+[node name="Sign2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 344, 31 )
+text = "Hi!"

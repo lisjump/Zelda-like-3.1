@@ -1,2 +1,2 @@
-{"filename":"res://engine/Main.tscn","inital_area_path":"res://areas/town.tscn","player_start_spritedir":"Up","player_startx":56,"player_starty":32}
-{"DAMAGE":0,"MAX_HEALTH":10,"SPEED":70,"filename":"res://player/player.tscn","health":10,"keys":0,"parent":"/root/Main"}
+{"filename":"res://engine/Main.tscn","inital_area_path":"res://areas/dungeon.tscn","player_start_spritedir":"DOWN","player_startx":416,"player_starty":48}
+{"DAMAGE":0,"MAX_HEALTH":10,"SPEED":70,"filename":"res://player/player.tscn","health":8.5,"keys":9,"parent":"/root/Main"}

@@ -28,6 +28,7 @@ func _ready():
 	$Tween.connect("tween_started", self, "screen_change_started")
 	$Tween.connect("tween_completed", self, "screen_change_completed")
 
+
 func _process(delta):
 	camera_rect = Rect2(position, SCREEN_SIZE)
 	
@@ -38,8 +39,6 @@ func _process(delta):
 	# if the player is no longer in the camera rectangle
 	if !$Tween.is_active() && !camera_rect.has_point(target.position):
 		scroll_camera()
-		
-	
 
 func scroll_camera():
 	target_grid_pos = get_grid_pos(target.position)
@@ -59,3 +58,11 @@ func screen_change_started(object, nodepath):
 
 func screen_change_completed(object, nodepath):
 	emit_signal("screen_change_completed")
+	
+func area_exited(area):
+	var body = area.get_parent()
+	if body.get_groups().has("projectile"):
+		body.queue_free()
+	if area.get_groups().has("disappears"):
+		area.queue_free()
+

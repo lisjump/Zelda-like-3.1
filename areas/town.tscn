@@ -8,7 +8,6 @@
 [node name="Town" type="Node"]
 script = ExtResource( 3 )
 player_start = Vector2( 56, 32 )
-player_start_spritedir = "Up"
 
 [node name="baselayer" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
