@@ -48,3 +48,6 @@ func _physics_process(delta):
 	# if the input has stopped being held destroy the sword
 	if !Input.is_action_pressed(input):
 		destroy(null) 
+	if get_parent().state == "default":
+		queue_free()
+

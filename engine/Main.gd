@@ -45,6 +45,7 @@ func teleport(new_scene_path, new_position, new_spritedir):
 	
 	var new_area = instance_area(new_scene_path)
 	player.position = new_position
+	player.state = "default"
 	current_area = new_area
 	player.spritedir = new_spritedir
 	get_tree().paused = false	

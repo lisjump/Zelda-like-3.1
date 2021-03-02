@@ -1,9 +1,9 @@
 extends Camera2D
 
-export(Vector2) var SCREEN_SIZE = Vector2(256, 144)
+export(Vector2) var SCREEN_SIZE = Vector2.ZERO
 export(float, 0, 5, .1) var SCROLL_SPEED	= 0.5
-
 export(NodePath) var target
+
 var target_grid_pos := Vector2(0,0)
 var last_target_grid_pos := Vector2(0,0)
 var camera_rect := Rect2()
@@ -16,6 +16,9 @@ func _ready():
 	# target is set in the scene the camera lives in and is generally the player
 	# setting it in the scene means not hard coding it
 	target = get_node(target)
+	
+	if SCREEN_SIZE == Vector2.ZERO:
+		SCREEN_SIZE = Vector2(ProjectSettings.get_setting("display/window/size/width"),ProjectSettings.get_setting("display/window/size/height"))
 	
 	# Find out which grid the target is in and 
 	# move the camera to the top left corner

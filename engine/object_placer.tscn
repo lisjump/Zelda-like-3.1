@@ -6,8 +6,6 @@
 [ext_resource path="res://pickups/key.png" type="Texture" id=4]
 [ext_resource path="res://tiles/individual-tiles/key_door.png" type="Texture" id=5]
 
-
-
 [sub_resource type="TileSet" id=1]
 0/name = "enemies/stalfos"
 0/texture = ExtResource( 1 )
@@ -62,14 +60,8 @@
 3/shape_offset = Vector2( 0, 0 )
 3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 3/shape_one_way = false
-3/shape_one_way_margin = 1.0
-3/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": null,
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
+3/shape_one_way_margin = 0.0
+3/shapes = [  ]
 3/z_index = 0
 
 [node name="ObjectPlacer" type="TileMap"]
