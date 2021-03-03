@@ -62,9 +62,12 @@ func load_maparea():
 		new_object.position = Vector2(node_data["pos_x"], node_data["pos_y"])
 		
 		# Now we set the remaining variables.
-		for i in node_data.keys():
-			if i == "filename" or i == "parent" or i == "pos_x" or i == "pos_y" or i == "direction_x" or i == "direction_y":
-				continue
-			new_object.set(i, node_data[i])
+		if new_object.has_method("load_dict"):
+			new_object.load_dict(node_data)
+		else:
+			for i in node_data.keys():
+				if i == "filename" or i == "parent" or i == "pos_x" or i == "pos_y":
+					continue
+				new_object.set(i, node_data[i])
 	
 	save_game.close()

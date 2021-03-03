@@ -5,12 +5,15 @@ class_name Entity
 # ATTRIBUTES
 # These are settable in the inspector
 export(String, "ENEMY", "PLAYER")	var TYPE 		= "ENEMY"
+export(String, FILE) 			var HURT_SOUND 	= "res://enemies/enemy_hurt.wav"
+# STATS
 # (float, min, max, increment)
 export(float, 0.5, 20, 0.5) 		var MAX_HEALTH 	= 1
 export(int) 						var SPEED 		= 70
 export(float, 0, 20, 0.5) 		var DAMAGE 		= 0.5
-export(String, FILE) 			var HURT_SOUND 	= "res://enemies/enemy_hurt.wav"
 
+
+# ITEM DROPS
 export(int, 0, 100, 5) 			var ITEM_DROP_PERCENT 		= 25
 
 # Keys are scene path names and values should be integers
@@ -29,21 +32,19 @@ var spritedir := "Down"
 # COMBAT
 var health : float = MAX_HEALTH
 var hitstun := 0
-
 var state := "default"
-
 var home_position := Vector2.ZERO
+
+# TEXTURES
+var texture_default = null
+var texture_hurt = null
 
 # This makes it so not every entity class has to name these 
 # nodes the same thing.  These get loaded a moment after the entity
 onready var anim := $AnimationPlayer
 onready var sprite := $Sprite
 onready var hitbox := $Hitbox
-
 onready var camera := get_node("/root/Main/Camera")
-
-var texture_default = null
-var texture_hurt = null
 
 func _ready():
 	texture_default = sprite.texture
