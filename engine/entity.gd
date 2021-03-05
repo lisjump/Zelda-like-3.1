@@ -6,6 +6,7 @@ class_name Entity
 # These are settable in the inspector
 export(String, "ENEMY", "PLAYER")	var TYPE 		= "ENEMY"
 export(String, FILE) 			var HURT_SOUND 	= "res://enemies/enemy_hurt.wav"
+
 # STATS
 # (float, min, max, increment)
 export(float, 0.5, 20, 0.5) 		var MAX_HEALTH 	= 1
@@ -22,7 +23,6 @@ export(Dictionary) 				var ITEM_DROP_WEIGHTS = {
 	'pickups/key'	: 0,
 }
 
-var ITEM_DROP_RANGES = {}
 
 # MOVEMENT
 var movedir := Vector2.ZERO
@@ -39,8 +39,7 @@ var home_position := Vector2.ZERO
 var texture_default = null
 var texture_hurt = null
 
-# This makes it so not every entity class has to name these 
-# nodes the same thing.  These get loaded a moment after the entity
+# These get loaded a moment after the entity
 onready var anim := $AnimationPlayer
 onready var sprite := $Sprite
 onready var hitbox := $Hitbox

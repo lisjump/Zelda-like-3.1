@@ -250,9 +250,9 @@ extents = Vector2( 5.5, 6.5 )
 z_index = 10
 script = ExtResource( 1 )
 TYPE = "PLAYER"
+HURT_SOUND = "res://player/player_hurt.wav"
 MAX_HEALTH = 3.0
 DAMAGE = 0.0
-HURT_SOUND = "res://player/player_hurt.wav"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 4.0

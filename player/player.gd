@@ -12,6 +12,8 @@ var keys := 0
 func _ready():
 	add_to_group("persist")
 	add_to_group("player")
+	if !TYPE:
+		TYPE == "PLAYER"
 	ray.add_exception(hitbox)
 
 func _physics_process(delta):
